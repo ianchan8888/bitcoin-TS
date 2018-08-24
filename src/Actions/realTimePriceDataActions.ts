@@ -8,4 +8,4 @@ export const receiveRealTimePriceData = (priceData: IRealTimePriceData, realTime
     realTimeGraphData
 })
 
-export type IReceiveRealTimePriceData = ReturnType<typeof receiveRealTimePriceData>
+export type IReceiveRealTimePriceDataAction = ReturnType<typeof receiveRealTimePriceData>
