@@ -1,4 +1,4 @@
-import { IReceiveRealTimePriceData, RECEIVE_REAL_TIME_PRICE_DATA } from "../Actions/realTimePriceDataActions"
+import { IReceiveRealTimePriceDataAction, RECEIVE_REAL_TIME_PRICE_DATA } from "../Actions/realTimePriceDataActions"
 import { IPriceMovementObj, IRealTimePriceData, RealTimeGraphData } from "../model"
 
 interface IState {
@@ -6,7 +6,7 @@ interface IState {
     realTimeGraphData: RealTimeGraphData,
     priceMovement: IPriceMovementObj
 }
-
+ 
 const initialState: IState = {
     priceData: { pair: [], volume: 0, bid: 0, ask: 0 },
     realTimeGraphData: [{ convertedTime: "", bid: 0, ask: 0 }],
@@ -23,7 +23,7 @@ const getPriceMovement = (oldPrice: number, newPrice: number) => {
     }
 }
 
-export default function realTimePriceDataReducer(state: IState = initialState, action: IReceiveRealTimePriceData): IState {
+export default function realTimePriceDataReducer(state: IState = initialState, action: IReceiveRealTimePriceDataAction): IState {
     switch (action.type) {
         case RECEIVE_REAL_TIME_PRICE_DATA:
             return {

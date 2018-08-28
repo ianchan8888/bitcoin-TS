@@ -27,7 +27,7 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
-store.dispatch(getHistoricalPricesThunk())
+store.dispatch(getHistoricalPricesThunk() as any)
 store.dispatch(websocketConnect())
 
 registerServiceWorker()

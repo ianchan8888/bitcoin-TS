@@ -1,5 +1,11 @@
 // Websocket middle to create WebSocket connection
 import moment from "moment"
+import { Dispatch, Middleware } from "redux"
+
+import {
+    IReceiveRealTimePriceDataAction,
+    receiveRealTimePriceData
+} from "./realTimePriceDataActions"
 import {
     IWebsocketTypesActions,
     WEBSOCKET_CONNECT,
@@ -11,19 +17,14 @@ import {
     websocketSubscribe
 } from "./websocketActions"
 
-import { receiveRealTimePriceData } from "./realTimePriceDataActions"
+import { IRealTimePriceData, RealTimeGraphData, URL, WsStatus } from "../model"
+import { MyStore } from "../Reducers"
 
-import { Action, Dispatch, Middleware, MiddlewareAPI } from "../../node_modules/redux";
+type RealTimeTypeActions = IWebsocketTypesActions | IReceiveRealTimePriceDataAction
+type WsMiddleware = (url: URL.websocketUrl, channel: string) => Middleware<Dispatch<RealTimeTypeActions>, MyStore, Dispatch<RealTimeTypeActions>>
 
-import { IRealTimePriceData, RealTimeGraphData, URL, WsStatus } from "../model";
-
-type WsMiddleware = (
-    url: URL.websocketUrl,
-    channel: string
-) => any
-
-const connectWebSocketMiddleware: WsMiddleware = (url: URL.websocketUrl, channel: string) => {
-    return ({ dispatch }: MiddlewareAPI) => (next: Dispatch) => (action: Action) => {
+const connectWebSocketMiddleware: WsMiddleware = (url, channel) => {
+    return ({ dispatch }) => (next) => (action) => {
         let websocket = null
 
         const onOpen = (socket: WebSocket) => () => {

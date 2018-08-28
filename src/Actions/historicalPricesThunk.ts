@@ -14,16 +14,18 @@ import { IApi } from "../Store"
 
 type ThunkResult<R> = ThunkAction<Promise<R>, MyStore, IApi, IHistoricalTypeActions>
 
-const getHistoricalPricesThunk: () => ThunkResult<IHistoricalTypeActions> = () => {
+const getHistoricalPricesThunk: () => ThunkResult<void> = () => 
     // It passes the dispatch method as an argument to the function,
     // thus making it able to dispatch actions itself.
-    return (dispatch, _, api) => {
+    async (dispatch, _, api) => {
         dispatch(getHistoricalPrices())
-        return api.getHistoricalPrices
-            .then(({ priceData, updated }) => dispatch(receiveHistoricalPrices(priceData, updated)))
-            .catch(() => dispatch(receiveHistoricalPricesError()))
+        try {
+            const { priceData, updated } = await api.getHistoricalPrices
+            dispatch(receiveHistoricalPrices(priceData, updated))
+        } catch(e) {
+            dispatch(receiveHistoricalPricesError())
+        }
     }
-}
 
 export default getHistoricalPricesThunk
 
